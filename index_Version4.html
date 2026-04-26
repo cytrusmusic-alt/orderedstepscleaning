@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordered Steps Cleaning</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #1B2B5E;
+            min-height: 100vh;
+        }
+
+        /* Color Scheme from Flyer */
+        :root {
+            --dark-navy: #1B2B5E;
+            --teal: #1FBBA6;
+            --red: #E63946;
+            --yellow: #FFD60A;
+            --light-gray: #F5F7FA;
+        }
+
+        /* Background Slideshow */
+        .slideshow-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        /* Overlay for better text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(27, 43, 94, 0.75);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Animated Background Bubbles */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble:nth-child(1) { width: 100px; height: 100px; animation: float 6s ease-in-out infinite; top: 10%; left: 5%; background: var(--teal); }
+        .bubble:nth-child(2) { width: 150px; height: 150px; animation: float 8s ease-in-out infinite; top: 50%; right: 5%; background: var(--yellow); }
+        .bubble:nth-child(3) { width: 80px; height: 80px; animation: float 7s ease-in-out infinite; bottom: 10%; left: 10%; background: var(--red); }
+
+        /* WhatsApp Button */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            animation: bounce 2s ease-in-out infinite;
+            text-decoration: none;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-button i {
+            color: white;
+            font-size: 30px;
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+            color: var(--dark-navy);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .whatsapp-button:hover .whatsapp-tooltip {
+            opacity: 1;
+        }
+
+        /* Header Styling */
+        .header {
+            background: linear-gradient(135deg, var(--dark-navy) 0%, rgba(27, 43, 94, 0.95) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--teal);
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            max-width: 120px;
+            height: auto;
+            animation: slideDown 0.8s ease-out;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .header-text h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: slideDown 0.8s ease-out;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            color: white;
+        }
+
+        .header-text p {
+            font-size: 1.1em;
+            animation: slideUp 1s ease-out;
+            font-style: italic;
+            opacity: 0.95;
+            color: var(--yellow);
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Container */
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Sections */
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            border-left: 6px solid var(--teal);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .section h2 {
+            color: var(--dark-navy);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--yellow));
+            border-radius: 2px;
+        }
+
+        /* Feature Boxes */
+        .feature {
+            background: linear-gradient(135deg, var(--light-gray) 0%, #E8F4F8 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--teal);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--teal);
+            border-radius: 0 10px 0 50px;
+            opacity: 0.1;
+        }
+
+        .feature:hover {
+            transform: translateX(10px);
+            box-shadow: 0 8px 20px rgba(31, 187, 166, 0.3);
+            border-left-color: var(--yellow);
+        }
+
+        .feature h3 {
+            color: var(--dark-navy);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature p {
+            color: #555;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Service Boxes */
+        .service-box {
+            background: linear-gradient(135deg, var(--dark-navy) 0%, #2D3E6F 100%);
+            color: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(27, 43, 94, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--teal);
+        }
+
+        .service-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: var(--teal);
+            border-radius: 50%;
+            transition: all 0.6s ease;
+            opacity: 0.1;
+        }
+
+        .service-box:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(31, 187, 166, 0.4);
+            border-top-color: var(--yellow);
+        }
+
+        .service-box:hover::before {
+            top: 0;
+            right: 0;
+        }
+
+        .service-box h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            color: var(--yellow);
+        }
+
+        .service-box ul {
+            list-style: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-box li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.8;
+        }
+
+        .service-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--teal);
+            font-weight: bold;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            height: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(31, 187, 166, 0.2);
+            border: 2px solid var(--teal);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:hover::after {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5em;
+            opacity: 1;
+            z-index: 3;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(27, 43, 94, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Grid Layout */
+        .left, .right {
+            animation: fadeIn 1s ease-out;
+        }
+
+        .left {
+            animation-delay: 0.1s;
+        }
+
+        .right {
+            animation-delay: 0.2s;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--dark-navy) 0%, #2D3E6F 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
+            border-top: 5px solid var(--teal);
+        }
+
+        .footer h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            animation: slideUp 0.8s ease-out;
+            color: var(--yellow);
+        }
+
+        .footer p {
+            font-size: 1.1em;
+            margin: 15px 0;
+            animation: fadeIn 0.8s ease-out;
+            transition: transform 0.3s ease;
+        }
+
+        .footer p:hover {
+            transform: scale(1.05);
+            color: var(--teal);
+        }
+
+        .footer p:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .footer p:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .footer p:nth-child(5) {
+            animation-delay: 0.6s;
+            font-size: 0.95em;
+            color: var(--teal);
+        }
+
+        /* Modal for Images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(27, 43, 94, 0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: slideDown 0.3s ease;
+            border: 5px solid var(--teal);
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--teal);
+        }
+
+        /* Slideshow Indicators */
+        .slideshow-indicators {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 50;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--teal);
+        }
+
+        .indicator.active {
+            background: var(--teal);
+            transform: scale(1.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 30px 15px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-text h1 {
+                font-size: 1.8em;
+            }
+
+            .header-text p {
+                font-size: 0.9em;
+            }
+
+            .logo {
+                max-width: 100px;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .section h2 {
+                font-size: 1.4em;
+            }
+
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-item {
+                height: 100px;
+            }
+
+            .whatsapp-button {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .whatsapp-button i {
+                font-size: 24px;
+            }
+
+            .slideshow-indicators {
+                bottom: 80px;
+                right: 20px;
+            }
+
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Slideshow -->
+    <div class="slideshow-background">
+        <div class="slide active" style="background-image: url('slideshow1.jpg');"></div>
+        <div class="slide" style="background-image: url('slideshow2.jpg');"></div>
+    </div>
+    <div class="overlay"></div>
+
+    <!-- Animated Bubbles Background -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <!-- Slideshow Indicators -->
+    <div class="slideshow-indicators">
+        <div class="indicator active" onclick="currentSlide(0)"></div>
+        <div class="indicator" onclick="currentSlide(1)"></div>
+    </div>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/270711897837" target="_blank" class="whatsapp-button">
+        <i class="fab fa-whatsapp"></i>
+        <div class="whatsapp-tooltip">Chat with us!</div>
+    </a>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <header class="header">
+        <div class="header-content">
+            <img src="logo.png" alt="Ordered Steps Cleaning Logo" class="logo">
+            <div class="header-text">
+                <h1>ORDERED STEPS CLEANING</h1>
+                <p>We lead the way to cleaner spaces</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+
+        <div class="left">
+            <div class="section">
+                <h2>👥 Who We Are</h2>
+                <p>
+                    We are Ordered Steps Cleaning. "We lead the way to cleaner spaces".
+                    Established in January 2023. Apartment cleaning in Estates was the beginning of this journey.
+                    And now we have grown the business in the kind of service we offer.
+                </p>
+            </div>
+
+            <div class="section">
+                <h2>⭐ Why Choose Us</h2>
+
+                <div class="feature">
+                    <h3>💎 Quality Services</h3>
+                    <p>We serve you with quality from the moment of contact to the final result.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>⏱️ Time Effective</h3>
+                    <p>Your time matters so you can focus on what's important.</p>
+                </div>
+
+                <div class="feature">
+                    <h3>🤝 Community</h3>
+                    <p>We believe in building lasting relationships with our clients.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="section">
+                <h2>🧹 Our Services</h2>
+
+                <div class="service-box">
+                    <h3>🏠 Standard Cleaning</h3>
+                    <ul>
+                        <li>Sweeping</li>
+                        <li>Mopping</li>
+                        <li>Dusting</li>
+                        <li>Tidying up rooms</li>
+                    </ul>
+                    <div class="image-gallery">
+                        <div class="gallery-item" onclick="openModal('standard1.jpg')">
+                            <img src="standard1.jpg" alt="Standard Cleaning 1">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('standard2.jpg')">
+                            <img src="standard2.jpg" alt="Standard Cleaning 2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-box">
+                    <h3>🔬 Deep Cleaning</h3>
+                    <ul>
+                        <li>Cornices Wash</li>
+                        <li>Cupboard Wash</li>
+                        <li>Shower Deep Clean</li>
+                        <li>Balcony/Patio Cleaning</li>
+                    </ul>
+                    <div class="image-gallery">
+                        <div class="gallery-item" onclick="openModal('deep1.jpg')">
+                            <img src="deep1.jpg" alt="Deep Cleaning 1">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('deep2.jpg')">
+                            <img src="deep2.jpg" alt="Deep Cleaning 2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-box">
+                    <h3>🧽 Carpet Cleaning</h3>
+                    <ul>
+                        <li>Small</li>
+                        <li>Medium</li>
+                        <li>Large</li>
+                        <li>Extra Large</li>
+                    </ul>
+                    <div class="image-gallery">
+                        <div class="gallery-item" onclick="openModal('carpet1.jpg')">
+                            <img src="carpet1.jpg" alt="Carpet Cleaning 1">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('carpet2.jpg')">
+                            <img src="carpet2.jpg" alt="Carpet Cleaning 2">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-box">
+                    <h3>🛋️ Couch Cleaning</h3>
+                    <ul>
+                        <li>2,3,4 Seater</li>
+                        <li>L-Shaped</li>
+                        <li>6 Seater</li>
+                        <li>Ottoman</li>
+                    </ul>
+                    <div class="image-gallery">
+                        <div class="gallery-item" onclick="openModal('couch1.jpg')">
+                            <img src="couch1.jpg" alt="Couch Cleaning 1">
+                        </div>
+                        <div class="gallery-item" onclick="openModal('couch2.jpg')">
+                            <img src="couch2.jpg" alt="Couch Cleaning 2">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <footer class="footer">
+        <h2>📞 Contact Us 📞</h2>
+        <p>☎️ <strong>063 783 5447</strong></p>
+        <p>📧 <strong>sthembilemangoane@gmail.com</strong></p>
+        <p>💬 Chat with us on WhatsApp: <strong>+27 711 897 837</strong></p>
+    </footer>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+
+        // Auto-rotate slides every 5 seconds
+        setInterval(() => {
+            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
+            updateSlides();
+        }, 5000);
+
+        function currentSlide(index) {
+            currentSlideIndex = index;
+            updateSlides();
+        }
+
+        function updateSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                indicators[index].classList.remove('active');
+            });
+            slides[currentSlideIndex].classList.add('active');
+            indicators[currentSlideIndex].classList.add('active');
+        }
+
+        function openModal(imageName) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = imageName;
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
