@@ -3,33 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ordered Steps Cleaning</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- SEO META DESCRIPTION -->
+    <title>Ordered Steps Cleaning | Lead the way to cleaner spaces</title>
+    <meta name="description" content="Ordered Steps Cleaning provides professional home deep cleaning, upholstery, carpet, and office cleaning services. Restoring order to your space.">
+    <meta name="keywords" content="Cleaning services, deep cleaning, carpet cleaning, upholstery cleaning, Johannesburg, Pretoria, Ordered Steps Cleaning">
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons/Illustrations -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     <style>
+        :root {
+            --primary-navy: #002D62;
+            --accent-teal: #39C69E;
+            --accent-red: #D22B2B;
+            --light-gray: #f4f4f4;
+            --white: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #1B2B5E;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow-x: hidden;
         }
 
-        /* Color Scheme from Flyer */
-        :root {
-            --dark-navy: #1B2B5E;
-            --teal: #1FBBA6;
-            --red: #E63946;
-            --yellow: #FFD60A;
-            --light-gray: #F5F7FA;
+        h1, h2, h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
         }
 
-        /* Background Slideshow */
-        .slideshow-background {
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: var(--white);
             position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo img {
+            height: 60px; 
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary-navy);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-teal);
+        }
+
+        /* --- HERO SLIDESHOW --- */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -39,785 +107,363 @@
 
         .slide {
             position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out;
             background-size: cover;
             background-position: center;
-        }
-
-        .slide.active {
-            opacity: 1;
-        }
-
-        /* Overlay for better text readability */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(27, 43, 94, 0.75);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Animated Background Bubbles */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.7; }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .bubble {
-            position: fixed;
-            border-radius: 50%;
-            opacity: 0.05;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .bubble:nth-child(1) { width: 100px; height: 100px; animation: float 6s ease-in-out infinite; top: 10%; left: 5%; background: var(--teal); }
-        .bubble:nth-child(2) { width: 150px; height: 150px; animation: float 8s ease-in-out infinite; top: 50%; right: 5%; background: var(--yellow); }
-        .bubble:nth-child(3) { width: 80px; height: 80px; animation: float 7s ease-in-out infinite; bottom: 10%; left: 10%; background: var(--red); }
-
-        /* WhatsApp Button */
-        .whatsapp-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: #25d366;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
-            z-index: 999;
-            animation: bounce 2s ease-in-out infinite;
-            text-decoration: none;
-        }
-
-        .whatsapp-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.6);
-        }
-
-        .whatsapp-button i {
-            color: white;
-            font-size: 30px;
-        }
-
-        .whatsapp-tooltip {
-            position: absolute;
-            bottom: 70px;
-            right: 0;
-            background: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            font-size: 0.9em;
-            color: var(--dark-navy);
             opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 1s ease-in-out;
+            filter: brightness(0.5);
         }
 
-        .whatsapp-button:hover .whatsapp-tooltip {
-            opacity: 1;
-        }
+        .slide.active { opacity: 1; }
 
-        /* Header Styling */
-        .header {
-            background: linear-gradient(135deg, var(--dark-navy) 0%, rgba(27, 43, 94, 0.95) 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-            border-bottom: 5px solid var(--teal);
-            z-index: 10;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            max-width: 120px;
-            height: auto;
-            animation: slideDown 0.8s ease-out;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-        }
-
-        .header-text h1 {
-            font-size: 2.5em;
+        .hero-content h1 {
+            font-size: 3.5rem;
             margin-bottom: 10px;
-            animation: slideDown 0.8s ease-out;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 2px;
-            color: white;
+            color: var(--accent-teal);
         }
 
-        .header-text p {
-            font-size: 1.1em;
-            animation: slideUp 1s ease-out;
-            font-style: italic;
-            opacity: 0.95;
-            color: var(--yellow);
-        }
-
-        /* Animations */
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Container */
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 60px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Sections */
-        .section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-            margin-bottom: 30px;
-            animation: fadeIn 0.8s ease-out;
-            position: relative;
-            border-left: 6px solid var(--teal);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .section h2 {
-            color: var(--dark-navy);
+        .hero-content p {
+            font-size: 1.5rem;
             margin-bottom: 20px;
-            font-size: 1.8em;
-            position: relative;
-            padding-bottom: 15px;
         }
 
-        .section h2::after {
+        .btn-main {
+            padding: 15px 30px;
+            background: var(--accent-teal);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-main:hover { background: var(--primary-navy); }
+
+        /* --- TRUST BAR --- */
+        .trust-bar { background: var(--primary-navy); color: white; display: flex; justify-content: space-around; padding: 20px 10%; text-align: center; }
+        .trust-item i { color: var(--accent-teal); font-size: 1.5rem; margin-bottom: 5px; display: block; }
+        .trust-item p { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- SECTIONS --- */
+        section { padding: 100px 10%; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-navy);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title h2::after {
             content: '';
+            width: 80px;
+            height: 4px;
+            background: var(--accent-red);
             position: absolute;
             bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--teal), var(--yellow));
-            border-radius: 2px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
-        /* Feature Boxes */
-        .feature {
-            background: linear-gradient(135deg, var(--light-gray) 0%, #E8F4F8 100%);
-            padding: 25px;
-            margin: 20px 0;
-            border-radius: 10px;
-            border-left: 5px solid var(--teal);
-            transition: all 0.3s ease;
-            position: relative;
+        /* --- ABOUT & FEATURES --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
         }
 
-        .feature::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60px;
-            height: 60px;
-            background: var(--teal);
-            border-radius: 0 10px 0 50px;
-            opacity: 0.1;
+        .feature-card {
+            padding: 40px;
+            background: var(--light-gray);
+            border-radius: 15px;
+            transition: 0.3s;
         }
 
-        .feature:hover {
-            transform: translateX(10px);
-            box-shadow: 0 8px 20px rgba(31, 187, 166, 0.3);
-            border-left-color: var(--yellow);
+        .feature-card:hover { transform: translateY(-10px); }
+
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--accent-teal);
+            margin-bottom: 20px;
         }
 
-        .feature h3 {
-            color: var(--dark-navy);
-            margin-bottom: 10px;
-            font-size: 1.2em;
-            position: relative;
-            z-index: 1;
+        /* --- SERVICES GRID --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
         }
 
-        .feature p {
-            color: #555;
-            line-height: 1.6;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Service Boxes */
         .service-box {
-            background: linear-gradient(135deg, var(--dark-navy) 0%, #2D3E6F 100%);
-            color: white;
-            padding: 25px;
-            margin: 20px 0;
+            background: var(--white);
+            border: 1px solid #ddd;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(27, 43, 94, 0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border-top: 5px solid var(--teal);
-        }
-
-        .service-box::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200px;
-            height: 200px;
-            background: var(--teal);
-            border-radius: 50%;
-            transition: all 0.6s ease;
-            opacity: 0.1;
-        }
-
-        .service-box:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 30px rgba(31, 187, 166, 0.4);
-            border-top-color: var(--yellow);
-        }
-
-        .service-box:hover::before {
-            top: 0;
-            right: 0;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
         }
 
         .service-box h3 {
-            font-size: 1.3em;
+            color: var(--primary-navy);
+            border-bottom: 2px solid var(--accent-teal);
             margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
-            color: var(--yellow);
+            display: inline-block;
         }
 
         .service-box ul {
             list-style: none;
-            position: relative;
-            z-index: 1;
+            line-height: 2;
         }
 
-        .service-box li {
-            padding: 8px 0;
-            padding-left: 25px;
-            position: relative;
-            line-height: 1.8;
-        }
-
-        .service-box li::before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--teal);
+        .service-box ul li::before {
+            content: "✓ ";
+            color: var(--accent-teal);
             font-weight: bold;
-            animation: pulse 2s ease-in-out infinite;
         }
 
-        /* Image Gallery */
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-            position: relative;
-            z-index: 2;
-        }
+        /* --- GALLERY STYLES --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 30px; }
+        .gallery-item { height: 250px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 8px;
-            height: 120px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(31, 187, 166, 0.2);
-            border: 2px solid var(--teal);
-        }
+        /* --- TESTIMONIALS --- */
+        .testi-card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-left: 5px solid var(--accent-teal); margin-bottom: 20px; color: #333; text-align: left; }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
+        /* --- FORM STYLES --- */
+        .contact-form input, .contact-form select, .contact-form textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .btn-submit { background: var(--accent-teal); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
+        .btn-submit:hover { background: var(--primary-navy); }
+        .popia-text { font-size: 0.7rem; opacity: 0.6; margin-top: 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
 
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .gallery-item:hover::after {
-            content: '🔍';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5em;
-            opacity: 1;
-            z-index: 3;
-        }
-
-        .gallery-item:standard1.jpgjpeg:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(27, 43, 94, 0.3);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        /* Grid Layout */
-        .left, .right {
-            animation: fadeIn 1s ease-out;
-        }
-
-        .left {
-            animation-delay: 0.1s;
-        }
-
-        .right {
-            animation-delay: 0.2s;
-        }
-
-        /* Footer */
-        .footer {
-            background: linear-gradient(135deg, var(--dark-navy) 0%, #2D3E6F 100%);
-            color: white;
-            padding: 50px 20px;
-            text-align: center;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 10;
-            border-top: 5px solid var(--teal);
-        }
-
-        .footer h2 {
-            font-size: 2em;
-            margin-bottom: 25px;
-            animation: slideUp 0.8s ease-out;
-            color: var(--yellow);
-        }
-
-        .footer p {
-            font-size: 1.1em;
-            margin: 15px 0;
-            animation: fadeIn 0.8s ease-out;
-            transition: transform 0.3s ease;
-        }
-
-        .footer p:hover {
-            transform: scale(1.05);
-            color: var(--teal);
-        }
-
-        .footer p:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .footer p:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        .footer p:nth-child(5) {
-            animation-delay: 0.6s;
-            font-size: 0.95em;
-            color: var(--teal);
-        }
-
-        /* Modal for Images */
-        .modal {
-            display: none;
+        /* --- WHATSAPP BUTTON --- */
+        .whatsapp-float {
             position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(27, 43, 94, 0.9);
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 80%;
-            max-height: 80%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: slideDown 0.3s ease;
-            border: 5px solid var(--teal);
-            border-radius: 10px;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: var(--teal);
-        }
-
-        /* Slideshow Indicators */
-        .slideshow-indicators {
-            position: fixed;
-            bottom: 100px;
+            bottom: 30px;
             right: 30px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            width: 60px;
+            height: 60px;
             display: flex;
-            gap: 10px;
-            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
         }
 
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid var(--teal);
+        /* --- FOOTER --- */
+        footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 80px 10% 20px;
+            text-align: center;
         }
 
-        .indicator.active {
-            background: var(--teal);
-            transform: scale(1.3);
-        }
+        .footer-content { margin-bottom: 30px; }
+        .contact-info p { margin: 10px 0; }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
-            .container {
-                grid-template-columns: 1fr;
-                padding: 30px 15px;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .header-text h1 {
-                font-size: 1.8em;
-            }
-
-            .header-text p {
-                font-size: 0.9em;
-            }
-
-            .logo {
-                max-width: 100px;
-            }
-
-            .section {
-                padding: 25px;
-            }
-
-            .section h2 {
-                font-size: 1.4em;
-            }
-
-            .image-gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .gallery-item {
-                height: 100px;
-            }
-
-            .whatsapp-button {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
-            }
-
-            .whatsapp-button i {
-                font-size: 24px;
-            }
-
-            .slideshow-indicators {
-                bottom: 80px;
-                right: 20px;
-            }
-
-            .indicator {
-                width: 10px;
-                height: 10px;
-            }
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Background Slideshow -->
-    <div class="slideshow-background">
-        <div class="slide active" style="background-image: url('slideshow1.jpg');"></div>
-        <div class="slide" style="background-image: url('slideshow2.jpg');"></div>
-    </div>
-    <div class="overlay"></div>
-
-    <!-- Animated Bubbles Background -->
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-
-    <!-- Slideshow Indicators -->
-    <div class="slideshow-indicators">
-        <div class="indicator active" onclick="currentSlide(0)"></div>
-        <div class="indicator" onclick="currentSlide(1)"></div>
-    </div>
-
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/270711897837" target="_blank" class="whatsapp-button">
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/27637835447" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
-        <div class="whatsapp-tooltip">Chat with us!</div>
     </a>
 
-    <!-- Image Modal -->
-    <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage">
-    </div>
-
-    <header class="header">
-        <div class="header-content">
-            <img src="logo.png" alt="Ordered Steps Cleaning Logo" class="logo">
-            <div class="header-text">
-                <h1>ORDERED STEPS CLEANING</h1>
-                <p>We lead the way to cleaner spaces</p>
-            </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="logo.png" alt="Ordered Steps Logo">
         </div>
-    </header>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Who We Are</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-    <section class="container">
-
-        <div class="left">
-            <div class="section">
-                <h2>👥 Who We Are</h2>
-                <p>
-                    We are Ordered Steps Cleaning. "We lead the way to cleaner spaces".
-                    Established in January 2023. Apartment cleaning in Estates was the beginning of this journey.
-                    And now we have grown the business in the kind of service we offer.
-                </p>
-            </div>
-
-            <div class="section">
-                <h2>⭐ Why Choose Us</h2>
-
-                <div class="feature">
-                    <h3>💎 Quality Services</h3>
-                    <p>We serve you with quality from the moment of contact to the final result.</p>
-                </div>
-
-                <div class="feature">
-                    <h3>⏱️ Time Effective</h3>
-                    <p>Your time matters so you can focus on what's important.</p>
-                </div>
-
-                <div class="feature">
-                    <h3>🤝 Community</h3>
-                    <p>We believe in building lasting relationships with our clients.</p>
-                </div>
-
-            </div>
+    <!-- Hero Section with Slideshow Background -->
+    <section id="home" class="hero">
+        <div class="slideshow-container">
+            <div class="slide active" style="background-image: url('image1.jpg');"></div>
+            <div class="slide" style="background-image: url('image2.jpg');"></div>
+            <div class="slide" style="background-image: url('image4.jpg');"></div>
         </div>
-
-        <div class="right">
-            <div class="section">
-                <h2>🧹 Our Services</h2>
-
-                <div class="service-box">
-                    <h3>🏠 Standard Cleaning</h3>
-                    <ul>
-                        <li>Sweeping</li>
-                        <li>Mopping</li>
-                        <li>Dusting</li>
-                        <li>Tidying up rooms</li>
-                    </ul>
-                    <div class="image-gallery">
-                        <div class="gallery-item" onclick="openModal('standard1.jpg')">
-                            <img src="standard1.jpg" alt="Standard Cleaning 1">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('standard2.jpg')">
-                            <img src="standard2.jpg" alt="Standard Cleaning 2">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-box">
-                    <h3>🔬 Deep Cleaning</h3>
-                    <ul>
-                        <li>Cornices Wash</li>
-                        <li>Cupboard Wash</li>
-                        <li>Shower Deep Clean</li>
-                        <li>Balcony/Patio Cleaning</li>
-                    </ul>
-                    <div class="image-gallery">
-                        <div class="gallery-item" onclick="openModal('deep1.jpg')">
-                            <img src="deep1.jpg" alt="Deep Cleaning 1">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('deep2.jpg')">
-                            <img src="deep2.jpg" alt="Deep Cleaning 2">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-box">
-                    <h3>🧽 Carpet Cleaning</h3>
-                    <ul>
-                        <li>Small</li>
-                        <li>Medium</li>
-                        <li>Large</li>
-                        <li>Extra Large</li>
-                    </ul>
-                    <div class="image-gallery">
-                        <div class="gallery-item" onclick="openModal('carpet1.jpg')">
-                            <img src="carpet1.jpg" alt="Carpet Cleaning 1">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('carpet2.jpg')">
-                            <img src="carpet2.jpg" alt="Carpet Cleaning 2">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service-box">
-                    <h3>🛋️ Couch Cleaning</h3>
-                    <ul>
-                        <li>2,3,4 Seater</li>
-                        <li>L-Shaped</li>
-                        <li>6 Seater</li>
-                        <li>Ottoman</li>
-                    </ul>
-                    <div class="image-gallery">
-                        <div class="gallery-item" onclick="openModal('couch1.jpg')">
-                            <img src="couch1.jpg" alt="Couch Cleaning 1">
-                        </div>
-                        <div class="gallery-item" onclick="openModal('couch2.jpg')">
-                            <img src="couch2.jpg" alt="Couch Cleaning 2">
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+        <div class="hero-content" data-aos="fade-up">
+            <h1>ORDERED STEPS CLEANING</h1>
+            <p>"We lead the way to cleaner spaces"</p>
+            <a href="https://wa.me/27637835447" class="btn-main">Get a Free Quote</a>
         </div>
-
     </section>
 
-    <footer class="footer">
-        <h2>📞 Contact Us 📞</h2>
-        <p>☎️ <strong>063 783 5447</strong></p>
-        <p>📧 <strong>sthembilemangoane@gmail.com</strong></p>
-        <p>💬 Chat with us on WhatsApp: <strong>+27 711 897 837</strong></p>
+    <!-- Trust Signals Bar -->
+    <div class="trust-bar">
+        <div class="trust-item"><i class="fas fa-user-shield"></i><p>Vetted Staff</p></div>
+        <div class="trust-item"><i class="fas fa-leaf"></i><p>Eco-Friendly</p></div>
+        <div class="trust-item"><i class="fas fa-check-circle"></i><p>Satisfaction Guaranteed</p></div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" data-aos="fade-right">
+        <div class="section-title">
+            <h2>Who We Are</h2>
+        </div>
+        <!-- Rewritten About Us Text -->
+        <p style="text-align: center; max-width: 900px; margin: 0 auto 50px; font-size: 1.1rem;">
+            Since January 2023, <strong>Ordered Steps Cleaning</strong> has led the way in professional hygiene solutions. We specialize in transforming residential estates and commercial hubs across the region. Our mission is simple: to restore order and health to your environment through meticulous care, vetted staff, and industrial-grade equipment.
+        </p>
+        
+        <div class="features">
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="100">
+                <i class="fas fa-award"></i>
+                <h3>Quality Services</h3>
+                <p>We serve you with quality from the first contact to the finished work.</p>
+            </div>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="200">
+                <i class="fas fa-clock"></i>
+                <h3>Time Effective</h3>
+                <p>Your time matters. We work efficiently so you can enjoy your space.</p>
+            </div>
+            <div class="feature-card" data-aos="zoom-in" data-aos-delay="300">
+                <i class="fas fa-handshake"></i>
+                <h3>Community</h3>
+                <p>We believe in creating lasting relationships with our clients.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" style="background-color: var(--light-gray);">
+        <div class="section-title">
+            <h2>Our Services</h2>
+        </div>
+        <div class="services-grid">
+            <div class="service-box" data-aos="flip-left">
+                <h3>Standard Cleaning</h3>
+                <ul>
+                    <li>Sweeping & Mopping</li>
+                    <li>Dusting</li>
+                    <li>Tidying up rooms</li>
+                </ul>
+            </div>
+            <div class="service-box" data-aos="flip-left" data-aos-delay="100">
+                <h3>Deep Cleaning</h3>
+                <ul>
+                    <li>Cornices Wash</li>
+                    <li>Cupboard Wash</li>
+                    <li>Shower Deep Clean</li>
+                    <li>Balcony/Patio Cleaning</li>
+                </ul>
+            </div>
+            <div class="service-box" data-aos="flip-left" data-aos-delay="200">
+                <h3>Upholstery</h3>
+                <ul>
+                    <li>Couch Cleaning (All sizes)</li>
+                    <li>Mattress Deep Cleaning</li>
+                    <li>Car Seat Deep Cleaning</li>
+                </ul>
+            </div>
+            <div class="service-box" data-aos="flip-left" data-aos-delay="300">
+                <h3>Carpets</h3>
+                <ul>
+                    <li>Small / Medium</li>
+                    <li>Large / Extra Large</li>
+                    <li>Industrial Vacuuming</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery">
+        <div class="section-title"><h2>Our Results</h2></div>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="image5.jpg" alt="Cleaning Result"></div>
+            <div class="gallery-item"><img src="image10.jpg" alt="Cleaning Result"></div>
+            <div class="gallery-item"><img src="image12.jpg" alt="Cleaning Result"></div>
+            <div class="gallery-item"><img src="image15.jpg" alt="Cleaning Result"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" style="background: var(--light-gray);">
+        <div class="section-title"><h2>Customer Reviews</h2></div>
+        <div class="testimonial-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <div class="testi-card"><p>"They made my couch look brand new again. Highly professional team!"</p><strong>- Sarah, Sandton</strong></div>
+            <div class="testi-card"><p>"The deep clean was incredibly thorough. Best service in the area."</p><strong>- Mike, Pretoria</strong></div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact Section -->
+    <footer id="contact">
+        <!-- Working Contact Form -->
+        <div style="max-width: 600px; margin: 0 auto 40px; background: white; padding: 30px; border-radius: 15px; color: #333; text-align: left;">
+            <h3 style="margin-bottom: 15px; color: var(--primary-navy);">Request a Quote</h3>
+            <form class="contact-form" action="https://formspree.io/f/YOUR_ID_HERE" method="POST">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="tel" name="phone" placeholder="Phone Number" required>
+                <select name="service">
+                    <option>Home Deep Cleaning</option>
+                    <option>Carpet/Upholstery</option>
+                    <option>Office Cleaning</option>
+                </select>
+                <textarea name="message" rows="3" placeholder="Additional details..."></textarea>
+                <button type="submit" class="btn-submit">Send Request</button>
+            </form>
+        </div>
+
+        <div class="footer-content">
+            <h2>Contact Us</h2>
+            <p>Ready for a cleaner space?</p>
+            <div class="contact-info">
+                <p><i class="fas fa-phone"></i> +27 63 783 5447 / +27 71 189 7837</p>
+                <p><i class="fas fa-envelope"></i> sthembilemangoane@gmail.com</p>
+            </div>
+        </div>
+        <hr style="opacity: 0.2; margin-bottom: 20px;">
+        <p>&copy; Siphiwe Bhidliza Mbonambi 2023 Ordered Steps Cleaning . All Rights Reserved.</p>
+        
+        <!-- POPIA Compliance -->
+        <div class="popia-text">
+            POPIA DISCLAIMER: By submitting this form, you consent to Ordered Steps Cleaning processing your personal info solely for the purpose of providing a quote.
+        </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        let currentSlideIndex = 0;
+        // Initialize Animations
+        AOS.init({ duration: 1000, once: true });
+
+        // Hero Slideshow Logic
         const slides = document.querySelectorAll('.slide');
-        const indicators = document.querySelectorAll('.indicator');
+        let currentSlide = 0;
 
-        // Auto-rotate slides every 5 seconds
-        setInterval(() => {
-            currentSlideIndex = (currentSlideIndex + 1) % slides.length;
-            updateSlides();
-        }, 5000);
-
-        function currentSlide(index) {
-            currentSlideIndex = index;
-            updateSlides();
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
         }
 
-        function updateSlides() {
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active');
-                indicators[index].classList.remove('active');
-            });
-            slides[currentSlideIndex].classList.add('active');
-            indicators[currentSlideIndex].classList.add('active');
-        }
-
-        function openModal(imageName) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            modalImg.src = imageName;
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
+        setInterval(nextSlide, 5000); // Change image every 5 seconds
     </script>
-
 </body>
 </html>
